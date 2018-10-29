@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+      image: mysql:5.7.22
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./conf/mysql.cnf:/etc/my.cnf
+      environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: peace_dev
+

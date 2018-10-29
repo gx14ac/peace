@@ -1,0 +1,8 @@
+[mysqld]
+character-set-server=utf8
+
+general_log=ON
+general_log_file=/var/log/mysql/query.log
+
+[mysql]
+default-character-set=utf8
