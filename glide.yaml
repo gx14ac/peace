@@ -1,0 +1,18 @@
+package: "github.com/OkumuraShintarou/peace"
+import:
+- package: github.com/gin-gonic/gin
+  version: ~1.2.0
+- package: github.com/gin-contrib/cors
+- package: github.com/jinzhu/gorm
+  version: ~1.0.0
+- package: github.com/satori/go.uuid
+  version: ~1.2.0
+- package: github.com/jasonlvhit/gocron
+- package: go.uber.org/zap
+  version: ~1.7.1
+- package: github.com/go-sql-driver/mysql
+  version: ~1.3.0
+- package: github.com/aws/aws-sdk-go
+  version: ^1.15.54
+- package: github.com/pattickkmn/go-cache
+  version: ^2.1.0
