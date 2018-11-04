@@ -17,6 +17,15 @@ func NewCustomContext(c *gin.Context) *CustomContext {
 	return &CustomContext{c}
 }
 
+type HandlerFunc func(*CustomContext)
+
+func CustomHandlerFunc(handler HandlerFunc) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cc := &CustomContext{c}
+		handler(cc)
+	}
+}
+
 func (cc *CustomContext) AbortWithError(err *apperr.Error) {
 	cc.Set(errorKey, err)
 	cc.AbortWithStatusJSON(err.Resp())

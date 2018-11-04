@@ -11,7 +11,7 @@ func MustNewDB(user, pass, name string) *gorm.DB {
 	var db *gorm.DB
 	var err error
 
-	url := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
+	url := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=true",
 		user,
 		pass,
 		name,
