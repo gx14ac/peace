@@ -7,17 +7,16 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func MustNewDB(host, port, user, pass, name string) *gorm.DB {
+func MustNewDB(user, pass, name string) *gorm.DB {
 	var db *gorm.DB
 	var err error
 
-	url := fmt.Sprintf("%s:%s@tcp([%s]:%s)/%s?charset=utf8&parseTime=true",
+	url := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
 		user,
 		pass,
-		host,
-		port,
 		name,
 	)
+	fmt.Println(url)
 
 	x := 1
 	maxRetryCount := 15
