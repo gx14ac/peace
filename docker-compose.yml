@@ -15,13 +15,18 @@ services:
       dockerfile: "Dockerfile${LOCAL}"
     ports:
       - '9090:9090'
-    working_dir: 'go/src/github.com/OkumuraShintarou/peace'
+    working_dir: '/go/src/github.com/OkumuraShintarou/peace'
     environment:
       APP_SERVICE: "api"
       APP_ENV: "${APP_ENV}"
       APP_PORT: "${APP_PORT}"
       CORS_DOMAIN: "${CORS_DOMAIN}"
-      BASIC_USER: "${BASIC_USER}"
-      BASIC_PASS: "${BASIC_PASS}"
-      DB_HOST: "db"     
-      DB_PORT: "${DB_PORT"
+      DB_HOST: "peace_dev"     
+      DB_PORT: "${DB_PORT}"
+      DB_PASS: "${DB_PASS}"
+      DB_NAME: "${DB_NAME}"
+    volumes:
+      - .:/go/src/github.com/OkumuraShintarou/peace
+    links:
+      - db
+    command: make run

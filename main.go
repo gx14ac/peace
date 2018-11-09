@@ -14,7 +14,7 @@ import (
 
 func main() {
 	cfg := config.New()
-	dbm := db.MustNewDB(cfg.DBUser, cfg.DBPass, cfg.DBName)
+	dbm := db.MustNewDB(cfg.DBPass, cfg.DBName)
 	app.Init(dbm, cfg)
 
 	r := router.New()

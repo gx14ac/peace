@@ -8,6 +8,7 @@ type Config struct {
 	AppService string
 	AppEnv     string
 	AppPort    string
+	CorsDomain string
 
 	BasicUser string
 	BasicPass string
@@ -25,7 +26,16 @@ type Config struct {
 
 func New() Config {
 	return Config{
-		AppPort: string(os.Getenv("APP_PORT")),
+		AppService: string(os.Getenv("APP_SERVICE")),
+		AppEnv:     string(os.Getenv("APP_ENV")),
+		AppPort:    string(os.Getenv("APP_PORT")),
+		CorsDomain: string(os.Getenv("CORS_DOMAIN")),
+
+		BasicUser: string(os.Getenv("BASIC_USER")),
+		BasicPass: string(os.Getenv("BASIC_PASS")),
+
+		DBHost: string(os.Getenv("DB_HOST")),
+		DBPort: string(os.Getenv("DB_PORT")),
 		DBName: string(os.Getenv("DB_NAME")),
 		DBUser: string(os.Getenv("DB_USER")),
 		DBPass: string(os.Getenv("DB_PASS")),

@@ -1,0 +1,8 @@
+FROM golang:1.11
+LABEL maintainer="flekystyley@gmail.com"
+WORKDIR /app
+EXPOSE 9090
+ENV GOPATH /go
+COPY conf ./conf
+COPY db ./db
+CMD ["bin/server"]
