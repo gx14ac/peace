@@ -21,8 +21,9 @@ services:
       APP_ENV: "${APP_ENV}"
       APP_PORT: "${APP_PORT}"
       CORS_DOMAIN: "${CORS_DOMAIN}"
-      DB_HOST: "peace_dev"     
+      DB_HOST: "db"     
       DB_PORT: "${DB_PORT}"
+      DB_USER: "${DB_USER}"
       DB_PASS: "${DB_PASS}"
       DB_NAME: "${DB_NAME}"
     volumes:
