@@ -9,5 +9,11 @@ import (
 func New() *gin.Engine {
 	r := gin.Default()
 	r.GET("api/ping", util.CustomHandlerFunc(handler.Ping))
+
+	api := r.Group("api")
+	{
+		api.POST("/signup_guest", util.CustomHandlerFunc(handler.SessionSignUp))
+	}
+
 	return r
 }

@@ -16,6 +16,14 @@ type Error struct {
 	code  Code
 }
 
+func NewError(code Code, level Level, log string) *Error {
+	return &Error{
+		code:  code,
+		level: level,
+		log:   log,
+	}
+}
+
 func CreateError(code Code, level Level, log string) *Error {
 	return &Error{
 		code:  code,

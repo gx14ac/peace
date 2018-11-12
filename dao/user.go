@@ -25,7 +25,7 @@ func NewUser(dbm *gorm.DB) User {
 
 func (u *UserImpl) FirstOrCreate(newUser *model.User) (*model.User, *apperr.Error) {
 	var (
-		user model.User,
+		user model.User
 		err *apperr.Error
 	)
 
@@ -33,7 +33,7 @@ func (u *UserImpl) FirstOrCreate(newUser *model.User) (*model.User, *apperr.Erro
 		Where(model.User{ID: newUser.ID}).
 		Attrs(newUser).
 		FirstOrCreate(&user); len(res.GetErrors()) > 0 {
-			dberr := res.GetErros()[0]
+			dberr := res.GetErrors()[0]
 			return nil, apperr.NewError(apperr.DBError, apperr.Warn, dberr.Error())
 		}
 	return &user, err

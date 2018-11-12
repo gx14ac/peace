@@ -17,6 +17,7 @@ func main() {
 	dbm := db.MustNewDB(cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName)
 	app.Init(dbm, cfg)
 
+	db.Migrate(dbm)
 	r := router.New()
 	r.Run(":" + cfg.AppPort)
 }

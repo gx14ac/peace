@@ -19,6 +19,10 @@ func Init(dbm *gorm.DB, cfg config.Config) {
 	}
 }
 
+func DBM() *gorm.DB {
+	return _app.dbm
+}
+
 func IsPrd() bool {
 	return _app.config.AppEnv == "prd"
 }

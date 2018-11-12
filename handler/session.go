@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 	"github.com/OkumuraShintarou/peace/app"
 	"github.com/OkumuraShintarou/peace/apperr"
 	"github.com/OkumuraShintarou/peace/model"
@@ -9,7 +12,7 @@ import (
 )
 
 func SessionSignUp(cc *util.CustomContext) {
-	var param model.SignUpParam
+	var param model.SignUpGuestParam
 
 	if bindErr := cc.BindJSON(&param); bindErr != nil {
 		err := apperr.NewError(apperr.RequestError, apperr.Info, bindErr.Error())
@@ -18,4 +21,15 @@ func SessionSignUp(cc *util.CustomContext) {
 	}
 
 	userSvc := service.NewUser(app.DBM())
+	
+	user, err := userSvc.SignUpGuest(param)
+	
+	if err != nil {
+		cc.AbortWithError(err)
+		return
+	}
+
+	cc.JSON(http.StatusOK, gin.H{
+		"user": user.Resp(),
+	})
 }
