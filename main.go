@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/OkumuraShintarou/peace/app"
-	"github.com/OkumuraShintarou/peace/config"
 	"github.com/OkumuraShintarou/peace/db"
 	resource "github.com/OkumuraShintarou/peace/resources/strings"
 	"github.com/OkumuraShintarou/peace/router"
@@ -19,10 +18,11 @@ func init() {
 }
 
 func main() {
-	cfg := config.New()
-	dbm := db.MustNewDB(cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName)
-	app.Init(dbm, cfg)
+	cfg := app.Shared().Config
+	dbm := app.Shared().Dbm
+
+	appPort := cfg.AppPort
 	db.Migrate(dbm)
-	r := router.New()
-	r.Run(":" + cfg.AppPort)
+	r := router.NewRouter()
+	r.Run(":" + appPort)
 }
