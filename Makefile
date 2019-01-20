@@ -1,9 +1,9 @@
 OS=linux
 ARCH=amd64
-ROOT=$(GOPATH)/src/github.com/OkumuraShintarou/peace
 
 build:
-	GOOS=$(OS) GOARCH=$(ARCH) CG0_ENABLED=0 go build -o bin/server -a -tags netgo -installsuffix netgo --ldflags '-extldflags "-static"' main.go
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=1 go build -o bin/server -a -tags netgo -installsuffix netgo --ldflags '-linkmode external -extldflags -static' main.go
+
 
 run:
 	go get github.com/pilu/fresh
