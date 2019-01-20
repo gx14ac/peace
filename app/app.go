@@ -8,14 +8,14 @@ import (
 
 type App struct {
 	Dbm    *gorm.DB
-	Config config.Config
+	Config *config.Config
 }
 
 var sharedInstance *App
 
 func init() {
 	cfg := config.NewConfig()
-	dbm := db.MustNewDB(cfg.DBHost, cfg.AppPort, cfg.DBUser, cfg.DBName)
+	dbm := db.MustNewDB(cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName)
 
 	sharedInstance = &App{
 		Dbm:    dbm,

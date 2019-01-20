@@ -26,9 +26,13 @@ func CustomHandlerFunc(handler HandlerFunc) gin.HandlerFunc {
 	}
 }
 
-func (cc *CustomContext) AbortWithError(err *apperr.Error) {
+func (cc *CustomContext) AbortError(status int, err *apperr.Error) {
+	cc.SetError(err)
+	cc.AbortWithStatusJSON(status, err.ToJSON())
+}
+
+func (cc *CustomContext) SetError(err *apperr.Error) {
 	cc.Set(errorKey, err)
-	cc.AbortWithStatusJSON(err.Resp())
 }
 
 func (cc *CustomContext) GetError() (*apperr.Error, bool) {

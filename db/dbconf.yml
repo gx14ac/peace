@@ -1,0 +1,7 @@
+default:
+    driver: mymysql
+    open: $GOOSE_DATABASE_URL
+test:
+    driver: mymysql
+    open: tcp:127.0.0.1:3306*peace_test/root/password
+

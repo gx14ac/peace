@@ -12,12 +12,14 @@ func NewRouter() *gin.Engine {
 	dbm := app.Shared().Dbm
 	config := app.Shared().Config
 
+	sessionHandler := handler.NewSessionHandler(dbm, config)
+
 	r := gin.Default()
-	r.GET("api/ping", util.CustomHandlerFunc(handler.Ping))
+	// r.GET("api/ping", util.CustomHandlerFunc(handler.Ping))
 
 	api := r.Group("api")
 	{
-		api.POST("/signup_guest", util.CustomHandlerFunc(handler.SessionSignUp))
+		api.POST("/signup_guest", util.CustomHandlerFunc(sessionHandler.SignUp))
 	}
 
 	return r

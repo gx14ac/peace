@@ -1,8 +1,10 @@
-hash: b718c6c87e77e876a057d040f248d5796b0ed385f22a99c9129f1df53ae8a255
-updated: 2018-11-10T03:18:49.288993+09:00
+hash: e33b282f6a250a1dc27412f0f3ffa430c760d97476779eea3d9af2407b188748
+updated: 2019-01-20T17:53:11.122485964+09:00
 imports:
 - name: github.com/aws/aws-sdk-go
-  version: 65d3a00e127da62728a742722df4258ae4206ffc
+  version: a2484497433aa110263c045df2f1d49336b38cfd
+- name: github.com/dgrijalva/jwt-go
+  version: 3af4c746e1c248ee8491a3e0c6f7a9cd831e95f8
 - name: github.com/gin-contrib/cors
   version: 6f0a820f94bea07359ec77c26855ca8cf6762739
 - name: github.com/gin-contrib/sse

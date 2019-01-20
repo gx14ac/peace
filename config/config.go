@@ -26,8 +26,8 @@ type Config struct {
 	SlackToken string
 }
 
-func NewConfig() Config {
-	return Config{
+func NewConfig() *Config {
+	return &Config{
 		AppService: string(os.Getenv("APP_SERVICE")),
 		AppEnv:     string(os.Getenv("APP_ENV")),
 		AppPort:    string(os.Getenv("APP_PORT")),

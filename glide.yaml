@@ -16,3 +16,4 @@ import:
   version: ^1.15.54
 - package: github.com/patrickmn/go-cache
   version: ^2.1.0
+- package: github.com/dgrijalva/jwt-go
