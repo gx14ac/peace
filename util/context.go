@@ -8,9 +8,8 @@ import (
 )
 
 const (
-	idKey      = "id"
-	addressKey = "address"
-	errorKey   = "error"
+	idKey    = "id"
+	errorKey = "error"
 )
 
 type CustomContext struct {

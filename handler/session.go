@@ -25,6 +25,7 @@ func NewSessionHandler(dbm *gorm.DB, config *config.Config) *SessionHandler {
 	}
 }
 
+/// MEMO: - UserNameを使用してユーザー登録をする
 func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
 	var param entity.SignUpParam
 
@@ -50,4 +51,9 @@ func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
 	cc.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})
+}
+
+func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
+	UserID, err := cc.GetAddress()
+
 }
