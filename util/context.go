@@ -1,12 +1,16 @@
 package util
 
 import (
+	"errors"
+
 	"github.com/OkumuraShintarou/peace/apperr"
 	"github.com/gin-gonic/gin"
 )
 
 const (
-	errorKey = "error"
+	nameKey    = "name"
+	addressKey = "address"
+	errorKey   = "error"
 )
 
 type CustomContext struct {
@@ -42,4 +46,18 @@ func (cc *CustomContext) GetError() (*apperr.Error, bool) {
 	}
 	err, ok := errIF.(*apperr.Error)
 	return err, ok
+}
+
+func (cc *CustomContext) GetUserName() (string, *apperr.Error) {
+	addIf, ok := cc.Get(nameKey)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("no name found in context"))
+	}
+
+	addr, ok := addIf.(string)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("name cast error"))
+	}
+
+	return addr, nil
 }
