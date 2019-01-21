@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	nameKey    = "name"
+	idKey      = "id"
 	addressKey = "address"
 	errorKey   = "error"
 )
@@ -49,7 +49,7 @@ func (cc *CustomContext) GetError() (*apperr.Error, bool) {
 }
 
 func (cc *CustomContext) GetUserName() (string, *apperr.Error) {
-	addIf, ok := cc.Get(nameKey)
+	addIf, ok := cc.Get(idKey)
 	if !ok {
 		return "", apperr.NewError(apperr.ServerError, errors.New("no name found in context"))
 	}

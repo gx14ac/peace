@@ -5,9 +5,9 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func NewJwtToken(userName, jwtSecret string) (string, *apperr.Error) {
+func NewJwtToken(userId, jwtSecret string) (string, *apperr.Error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"name": userName,
+		"id": userId,
 	})
 
 	token, stderr := t.SignedString([]byte(jwtSecret))
