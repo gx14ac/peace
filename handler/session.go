@@ -55,5 +55,10 @@ func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
 
 func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
 	UserID, err := cc.GetAddress()
+	if err != nil {
+		cc.AbortError(400, err)
+		return
+	}
 
+	
 }

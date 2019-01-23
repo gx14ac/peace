@@ -21,3 +21,7 @@ func NewUserService(dbm *gorm.DB) *UserService {
 func (userService *UserService) FirstOrCreate(userName string) (*entity.User, *apperr.Error) {
 	return userService.FirstOrCreate(userName)
 }
+
+func (userService *UserService) FindByUserID(userId string) (*entity.User, *apperr.Error) {
+	
+}

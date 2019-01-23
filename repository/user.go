@@ -8,6 +8,7 @@ import (
 
 type User interface {
 	FirstOrCreate(userId string) (*entity.User, *apperr.Error)
+	FindByUserID((userId string) (*entity,User, *apperr.Error)
 }
 
 type UserImpl struct {
@@ -32,4 +33,11 @@ func (userRepo *UserImpl) FirstOrCreate(userId string) (*entity.User, *apperr.Er
 	}
 
 	return &user, nil
+}
+
+func (userRepo *UserImpl) FindByUserID((userId string) (*entity,User, *apperr.Error) {
+	var user entity.User
+
+	res := userRepo.dbm.Where(entity.User{ID: userId}).First(&user)
+
 }
