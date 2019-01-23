@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/OkumuraShintarou/peace/apperr"
 	"github.com/OkumuraShintarou/peace/entity"
 	"github.com/jinzhu/gorm"
@@ -8,7 +10,7 @@ import (
 
 type User interface {
 	FirstOrCreate(userId string) (*entity.User, *apperr.Error)
-	FindByUserID((userId string) (*entity,User, *apperr.Error)
+	FindByUserID(userId string) (*entity.User, *apperr.Error)
 }
 
 type UserImpl struct {
@@ -35,9 +37,16 @@ func (userRepo *UserImpl) FirstOrCreate(userId string) (*entity.User, *apperr.Er
 	return &user, nil
 }
 
-func (userRepo *UserImpl) FindByUserID((userId string) (*entity,User, *apperr.Error) {
+func (userRepo *UserImpl) FindByUserID(userId string) (*entity.User, *apperr.Error) {
 	var user entity.User
 
 	res := userRepo.dbm.Where(entity.User{ID: userId}).First(&user)
 
+	errSize := len(res.GetErrors())
+	if errSize > 0 {
+		err := apperr.NewError(apperr.NotFound, errors.New("user not found"))
+		return nil, err
+	}
+
+	return &user, nil
 }
