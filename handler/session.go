@@ -42,7 +42,8 @@ func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
 		return
 	}
 
-	token, err := util.NewJwtToken(user.ID, sessionHandler.jwtSecret)
+	// userNameもセットする
+	token, err := util.NewJwtToken(user, sessionHandler.jwtSecret)
 	if err != nil {
 		cc.AbortError(400, err)
 		return
@@ -53,12 +54,24 @@ func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
 	})
 }
 
+// JWTTokenを使用してmeを叩いている
 func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
-	UserID, err := cc.GetAddress()
+	userID, err := cc.GetUserID()
 	if err != nil {
 		cc.AbortError(400, err)
 		return
 	}
 
-	
+	userService := service.NewUserService(sessionHandler.dbm)
+
+	user, err := userService.FindByUserID(userID)
+	if err != nil {
+		cc.AbortWithError(400, err)
+		return
+	}
+
+	cc.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
+
 }

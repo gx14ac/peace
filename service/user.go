@@ -5,6 +5,7 @@ import (
 
 	"github.com/OkumuraShintarou/peace/apperr"
 	"github.com/OkumuraShintarou/peace/entity"
+	"github.com/OkumuraShintarou/peace/helper"
 	"github.com/OkumuraShintarou/peace/repository"
 )
 
@@ -19,9 +20,11 @@ func NewUserService(dbm *gorm.DB) *UserService {
 }
 
 func (userService *UserService) FirstOrCreate(userName string) (*entity.User, *apperr.Error) {
-	return userService.FirstOrCreate(userName)
+	userID := helper.CreateUserID()
+	return userService.userRepo.FirstOrCreate(userID, userName)
 }
 
-func (userService *UserService) FindByUserID(userId string) (*entity.User, *apperr.Error) {
-	
+func (userService *UserService) FindByUserID(userID string) (*entity.User, *apperr.Error) {
+	// helperを使用してuserIdを作成し、userRepoの引数にいれる
+	return userService.userRepo.FindByUserID(userID)
 }

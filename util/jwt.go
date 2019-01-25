@@ -2,12 +2,14 @@ package util
 
 import (
 	"github.com/OkumuraShintarou/peace/apperr"
+	"github.com/OkumuraShintarou/peace/entity"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func NewJwtToken(userId, jwtSecret string) (string, *apperr.Error) {
+func NewJwtToken(user *entity.User, jwtSecret string) (string, *apperr.Error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id": userId,
+		"id":   user.ID,
+		"name": user.Name,
 	})
 
 	token, stderr := t.SignedString([]byte(jwtSecret))

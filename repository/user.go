@@ -9,7 +9,7 @@ import (
 )
 
 type User interface {
-	FirstOrCreate(userId string) (*entity.User, *apperr.Error)
+	FirstOrCreate(userId, userName string) (*entity.User, *apperr.Error)
 	FindByUserID(userId string) (*entity.User, *apperr.Error)
 }
 
@@ -23,10 +23,10 @@ func NewUserRepository(dbm *gorm.DB) User {
 	}
 }
 
-func (userRepo *UserImpl) FirstOrCreate(userId string) (*entity.User, *apperr.Error) {
+func (userRepo *UserImpl) FirstOrCreate(userId, userName string) (*entity.User, *apperr.Error) {
 	var user entity.User
 
-	res := userRepo.dbm.FirstOrCreate(&user, entity.User{ID: userId})
+	res := userRepo.dbm.FirstOrCreate(&user, entity.User{ID: userId, Name: userName})
 
 	errSize := len(res.GetErrors())
 	if errSize > 0 {
@@ -40,7 +40,7 @@ func (userRepo *UserImpl) FirstOrCreate(userId string) (*entity.User, *apperr.Er
 func (userRepo *UserImpl) FindByUserID(userId string) (*entity.User, *apperr.Error) {
 	var user entity.User
 
-	res := userRepo.dbm.Where(entity.User{ID: userId}).First(&user)
+	res := userRepo.dbm.Where(entity.User{ID: userId}).Find(&user)
 
 	errSize := len(res.GetErrors())
 	if errSize > 0 {
