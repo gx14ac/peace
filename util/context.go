@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/OkumuraShintarou/peace/apperr"
-	"github.com/OkumuraShintarou/peace/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,13 +47,13 @@ func (cc *CustomContext) GetError() (*apperr.Error, bool) {
 	return err, ok
 }
 
-func (cc *util.CustomContext) GetUserID() (string, *apperr.Error) {
+func (cc *CustomContext) GetUserID() (string, *apperr.Error) {
 	userIdIf, ok := cc.Get(idKey)
 	if !ok {
 		return "", apperr.NewError(apperr.ServerError, errors.New("no userId found in context"))
 	}
 
-	userId, ok := addrIf.(string)
+	userId, ok := userIdIf.(string)
 	if !ok {
 		return "", apperr.NewError(apperr.ServerError, errors.New("userId cast error"))
 	}
