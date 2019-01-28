@@ -2,31 +2,27 @@ package app
 
 import (
 	"github.com/OkumuraShintarou/peace/config"
+	"github.com/OkumuraShintarou/peace/db"
 	"github.com/jinzhu/gorm"
 )
 
 type App struct {
-	dbm    *gorm.DB
-	config config.Config
+	Dbm    *gorm.DB
+	Config *config.Config
 }
 
-var _app *App
+var sharedInstance *App
 
-func Init(dbm *gorm.DB, cfg config.Config) {
-	_app = &App{
-		dbm:    dbm,
-		config: cfg,
+func init() {
+	cfg := config.NewConfig()
+	dbm := db.MustNewDB(cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName)
+
+	sharedInstance = &App{
+		Dbm:    dbm,
+		Config: cfg,
 	}
 }
 
-func DBM() *gorm.DB {
-	return _app.dbm
-}
-
-func IsPrd() bool {
-	return _app.config.AppEnv == "prd"
-}
-
-func IsDev() bool {
-	return _app.config.AppEnv == "dev"
+func Shared() *App {
+	return sharedInstance
 }

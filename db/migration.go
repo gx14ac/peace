@@ -1,13 +1,13 @@
 package db
 
 import (
+	"github.com/OkumuraShintarou/peace/entity"
 	"github.com/jinzhu/gorm"
-	"github.com/OkumuraShintarou/peace/model"
 )
 
 func Migrate(dbm *gorm.DB) {
 	if res := dbm.Debug().AutoMigrate(
-		&model.User{},
+		&entity.User{},
 	); len(res.GetErrors()) > 0 {
 		panic(res.GetErrors()[0])
 	}

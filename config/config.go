@@ -21,11 +21,13 @@ type Config struct {
 	DBUser string
 	DBPass string
 
+	JWTSecret string
+
 	SlackToken string
 }
 
-func New() Config {
-	return Config{
+func NewConfig() *Config {
+	return &Config{
 		AppService: string(os.Getenv("APP_SERVICE")),
 		AppEnv:     string(os.Getenv("APP_ENV")),
 		AppPort:    string(os.Getenv("APP_PORT")),
@@ -39,5 +41,7 @@ func New() Config {
 		DBName: string(os.Getenv("DB_NAME")),
 		DBUser: string(os.Getenv("DB_USER")),
 		DBPass: string(os.Getenv("DB_PASS")),
+
+		JWTSecret: string(os.Getenv("JWT_SECRET")),
 	}
 }

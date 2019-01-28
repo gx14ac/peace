@@ -1,11 +1,14 @@
 package util
 
 import (
+	"errors"
+
 	"github.com/OkumuraShintarou/peace/apperr"
 	"github.com/gin-gonic/gin"
 )
 
 const (
+	idKey    = "id"
 	errorKey = "error"
 )
 
@@ -26,9 +29,13 @@ func CustomHandlerFunc(handler HandlerFunc) gin.HandlerFunc {
 	}
 }
 
-func (cc *CustomContext) AbortWithError(err *apperr.Error) {
+func (cc *CustomContext) AbortError(status int, err *apperr.Error) {
+	cc.SetError(err)
+	cc.AbortWithStatusJSON(status, err.ToJSON())
+}
+
+func (cc *CustomContext) SetError(err *apperr.Error) {
 	cc.Set(errorKey, err)
-	cc.AbortWithStatusJSON(err.Resp())
 }
 
 func (cc *CustomContext) GetError() (*apperr.Error, bool) {
@@ -38,4 +45,36 @@ func (cc *CustomContext) GetError() (*apperr.Error, bool) {
 	}
 	err, ok := errIF.(*apperr.Error)
 	return err, ok
+}
+
+func (cc *CustomContext) GetUserID() (string, *apperr.Error) {
+	userIdIf, ok := cc.Get(idKey)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("no userId found in context"))
+	}
+
+	userId, ok := userIdIf.(string)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("userId cast error"))
+	}
+
+	return userId, nil
+}
+
+func (cc *CustomContext) GetUserName() (string, *apperr.Error) {
+	addIf, ok := cc.Get(idKey)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("no name found in context"))
+	}
+
+	addr, ok := addIf.(string)
+	if !ok {
+		return "", apperr.NewError(apperr.ServerError, errors.New("name cast error"))
+	}
+
+	return addr, nil
+}
+
+func (cc *CustomContext) SetID(id string) {
+	cc.Set(idKey, id)
 }

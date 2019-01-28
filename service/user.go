@@ -2,32 +2,29 @@ package service
 
 import (
 	"github.com/jinzhu/gorm"
+
 	"github.com/OkumuraShintarou/peace/apperr"
-	"github.com/OkumuraShintarou/peace/model"
-	"github.com/OkumuraShintarou/peace/dao"
+	"github.com/OkumuraShintarou/peace/entity"
+	"github.com/OkumuraShintarou/peace/helper"
+	"github.com/OkumuraShintarou/peace/repository"
 )
 
-type User interface {
-	SignUpGuest(param model.SignUpGuestParam) (*model.User, *apperr.Error)
+type UserService struct {
+	userRepo repository.User
 }
 
-type UserImpl struct {
-	userDao dao.User
-}
-
-func NewUser(dbm *gorm.DB) User {
-	return &UserImpl {
-		userDao: dao.NewUser(dbm),
+func NewUserService(dbm *gorm.DB) *UserService {
+	return &UserService{
+		userRepo: repository.NewUserRepository(dbm),
 	}
 }
 
-func (u *UserImpl) SignUpGuest(param model.SignUpGuestParam) (user *model.User, err *apperr.Error) {
+func (userService *UserService) FirstOrCreate(userName string) (*entity.User, *apperr.Error) {
+	userID := helper.CreateUserID()
+	return userService.userRepo.FirstOrCreate(userID, userName)
+}
 
-	// CreateNewGuestUser
-	newUser := model.NewUser()
-	newUser.Name = param.Name
-	
-	// Valodation
-	user, err = u.userDao.FirstOrCreate(&newUser)
-	return
+func (userService *UserService) FindByUserID(userID string) (*entity.User, *apperr.Error) {
+	// helperを使用してuserIdを作成し、userRepoの引数にいれる
+	return userService.userRepo.FindByUserID(userID)
 }

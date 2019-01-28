@@ -1,68 +1,42 @@
 package apperr
 
-type Level int
+import "fmt"
 
-const (
-	Info Level = iota + 1
-	Warn
-	Fatal
+var (
+	NotFound             = "NotFound"
+	BindError            = "BindError"
+	DBError              = "DBError"
+	ExternalServiceError = "ExternalServiceError"
+	ServerError          = "ServerError"
+	BadRequest           = "BadRequest"
+	AuthorizationError   = "AuthorizationError"
+	ValidationError      = "ValidationError"
 )
 
+// Error is アプリケーション内で扱われる標準的なエラー
 type Error struct {
-	error
-
-	log   string
-	level Level
-	code  Code
+	code    string
+	origErr error
 }
 
-func NewError(code Code, level Level, log string) *Error {
+func NewError(code string, err error) *Error {
 	return &Error{
-		code:  code,
-		level: level,
-		log:   log,
+		code:    code,
+		origErr: err,
 	}
 }
 
-func CreateError(code Code, level Level, log string) *Error {
-	return &Error{
-		code:  code,
-		level: level,
-		log:   log,
-	}
-}
-
-func (e Error) Error() string {
-	return string(e.code)
-}
-
-func (e Error) String() string {
-	return e.Error()
-}
-
-func (e Error) Message() string {
-	return e.code.message()
-}
-
-func (e Error) Level() Level {
-	return e.level
-}
-
-func (e Error) Log() string {
-	return e.log
-}
-
-func (e Error) Status() int {
-	return e.code.status()
-}
-
-func (e Error) Code() Code {
+func (e *Error) Code() string {
 	return e.code
 }
 
-func (e Error) Resp() (int, interface{}) {
-	return e.code.status(), map[string]interface{}{
-		"code":    e.code,
-		"message": e.code.message(),
+func (e *Error) Error() string {
+	return fmt.Sprintf("%s: %s", e.code, e.origErr.Error())
+}
+
+func (e *Error) ToJSON() map[string]interface{} {
+	return map[string]interface{}{
+		"code":  e.code,
+		"error": e.origErr.Error(),
 	}
 }

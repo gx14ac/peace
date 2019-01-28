@@ -4,32 +4,74 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/OkumuraShintarou/peace/app"
+	"github.com/jinzhu/gorm"
+
 	"github.com/OkumuraShintarou/peace/apperr"
-	"github.com/OkumuraShintarou/peace/model"
+	"github.com/OkumuraShintarou/peace/config"
+	"github.com/OkumuraShintarou/peace/entity"
 	"github.com/OkumuraShintarou/peace/service"
 	"github.com/OkumuraShintarou/peace/util"
 )
 
-func SessionSignUp(cc *util.CustomContext) {
-	var param model.SignUpGuestParam
+type SessionHandler struct {
+	dbm       *gorm.DB
+	jwtSecret string
+}
 
-	if bindErr := cc.BindJSON(&param); bindErr != nil {
-		err := apperr.NewError(apperr.RequestError, apperr.Info, bindErr.Error())
-		cc.AbortWithError(err)
+func NewSessionHandler(dbm *gorm.DB, config *config.Config) *SessionHandler {
+	return &SessionHandler{
+		dbm:       dbm,
+		jwtSecret: config.JWTSecret,
+	}
+}
+
+/// MEMO: - UserNameを使用してユーザー登録をする
+func (sessionHandler *SessionHandler) SignUp(cc *util.CustomContext) {
+	var param entity.SignUpParam
+
+	if stderr := cc.BindJSON(&param); stderr != nil {
+		err := apperr.NewError(apperr.BindError, stderr)
+		cc.AbortError(400, err)
 		return
 	}
 
-	userSvc := service.NewUser(app.DBM())
-	
-	user, err := userSvc.SignUpGuest(param)
-	
+	userService := service.NewUserService(sessionHandler.dbm)
+	user, err := userService.FirstOrCreate(param.UserName)
 	if err != nil {
-		cc.AbortWithError(err)
+		cc.AbortError(400, err)
+		return
+	}
+
+	// userNameもセットする
+	token, err := util.NewJwtToken(user, sessionHandler.jwtSecret)
+	if err != nil {
+		cc.AbortError(400, err)
 		return
 	}
 
 	cc.JSON(http.StatusOK, gin.H{
-		"user": user.Resp(),
+		"token": token,
 	})
+}
+
+// JWTTokenを使用してmeを叩いている
+func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
+	userID, err := cc.GetUserID()
+	if err != nil {
+		cc.AbortError(400, err)
+		return
+	}
+
+	userService := service.NewUserService(sessionHandler.dbm)
+
+	user, err := userService.FindByUserID(userID)
+	if err != nil {
+		cc.AbortWithError(400, err)
+		return
+	}
+
+	cc.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
+
 }
