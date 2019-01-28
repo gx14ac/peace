@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/OkumuraShintarou/peace/app"
 	"github.com/OkumuraShintarou/peace/handler"
+	"github.com/OkumuraShintarou/peace/middleware"
 	"github.com/OkumuraShintarou/peace/util"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,15 @@ func NewRouter() *gin.Engine {
 
 	api := r.Group("api")
 	{
+		noAuth := api.Group("")
 		api.POST("/signup_guest", util.CustomHandlerFunc(sessionHandler.SignUp))
+
+		// using Auth API
+		jwtAuth := noAuth.Group("")
+		jwtAuth.Use(middleware.JwtAuth())
+		{
+			jwtAuth.GET("/me", util.CustomHandlerFunc(sessionHandler.Me))
+		}
 	}
 
 	return r

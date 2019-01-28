@@ -74,3 +74,7 @@ func (cc *CustomContext) GetUserName() (string, *apperr.Error) {
 
 	return addr, nil
 }
+
+func (cc *CustomContext) SetID(id string) {
+	cc.Set(idKey, id)
+}
