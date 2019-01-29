@@ -32,3 +32,24 @@ services:
     links:
       - db
     command: make run
+  batch:
+    build:
+      context: "."
+      dockerfile: "Dockerfile${LOCAL}"
+    working_dir: '/go/src/github.com/OkumuraShintarou/peace'
+    environment:
+      APP_SERVICE: "batch"
+      APP_ENV: "${APP_ENV}"
+      APP_PORT: "${APP_PORT}"
+      CORS_DOMAIN: "${CORS_DOMAIN}"
+      DB_HOST: "db"     
+      DB_PORT: "${DB_PORT}"
+      DB_USER: "${DB_USER}"
+      DB_PASS: "${DB_PASS}"
+      DB_NAME: "${DB_NAME}"
+      JWT_SECRET: "${JWT_SECRET}"
+    volumes:
+      - .:/go/src/github.com/OkumuraShintarou/peace
+    links:
+      - db
+    command: go run main.go

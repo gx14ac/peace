@@ -31,6 +31,7 @@ func NewConfig() *Config {
 		AppService: string(os.Getenv("APP_SERVICE")),
 		AppEnv:     string(os.Getenv("APP_ENV")),
 		AppPort:    string(os.Getenv("APP_PORT")),
+
 		CorsDomain: string(os.Getenv("CORS_DOMAIN")),
 
 		BasicUser: string(os.Getenv("BASIC_USER")),
