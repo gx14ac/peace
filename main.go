@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/OkumuraShintarou/peace/app"
+	"github.com/OkumuraShintarou/peace/batch"
 	"github.com/OkumuraShintarou/peace/db"
 	resource "github.com/OkumuraShintarou/peace/resources/strings"
 	"github.com/OkumuraShintarou/peace/router"
@@ -21,8 +22,14 @@ func main() {
 	cfg := app.Shared().Config
 	dbm := app.Shared().Dbm
 
+	appService := cfg.AppService
 	appPort := cfg.AppPort
+
 	db.Migrate(dbm)
-	r := router.NewRouter()
-	r.Run(":" + appPort)
+	if appService == "api" {
+		r := router.NewRouter()
+		r.Run(":" + appPort)
+	} else if appService == "batch" {
+		batch.Start(dbm, cfg)
+	}
 }
