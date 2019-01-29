@@ -21,6 +21,7 @@ func NewRouter() *gin.Engine {
 	api := r.Group("api")
 	{
 		noAuth := api.Group("")
+		api.GET("/ping", util.CustomHandlerFunc(handler.Ping))
 		api.POST("/signup_guest", util.CustomHandlerFunc(sessionHandler.SignUp))
 
 		// using Auth API

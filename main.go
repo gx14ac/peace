@@ -26,7 +26,7 @@ func main() {
 	appPort := cfg.AppPort
 
 	db.Migrate(dbm)
-	if appService == "app" {
+	if appService == "api" {
 		r := router.NewRouter()
 		r.Run(":" + appPort)
 	} else if appService == "batch" {
