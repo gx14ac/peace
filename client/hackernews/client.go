@@ -16,6 +16,7 @@ type client struct {
 }
 
 type HackerNewsClientService interface {
+	GETNewsID() ([]int, error)
 	GET(id string) (*entity.HackerNew, error)
 }
 
@@ -23,7 +24,7 @@ type HackerNewsClientServiceImpl struct {
 	client client
 }
 
-func NewClient() HackerNewsClientService {
+func NewHackerNewsClient() HackerNewsClientService {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			// InsecureSkipVerify: true, 中間車攻撃をうける可能性があるのでフラグは指定しない
@@ -41,6 +42,37 @@ func NewClient() HackerNewsClientService {
 	hackerNewsImpl.client.defaultHeader.Set("Cache-Control", "no-cache")
 
 	return hackerNewsImpl
+}
+
+func (hnc HackerNewsClientServiceImpl) GETNewsID() ([]int, error) {
+	url := "https://hacker-news.firebaseio.com/v0/newstories.json"
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return []int{}, err
+	}
+
+	resp, err := hnc.client.httpClient.Do(req)
+	if err != nil {
+		return []int{}, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []int{}, err
+	}
+
+	var respBody []int
+	err = json.Unmarshal(bodyBytes, &respBody)
+	if err != nil {
+		return []int{}, err
+	}
+
+	fmt.Println(respBody)
+
+	return respBody, nil
 }
 
 func (hnc HackerNewsClientServiceImpl) GET(id string) (*entity.HackerNew, error) {
