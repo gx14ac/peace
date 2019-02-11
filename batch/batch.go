@@ -7,8 +7,9 @@ import (
 )
 
 func Start(dbm *gorm.DB, cfg *config.Config) {
-	gocron.Every(5).Seconds().Do(outputHelloWorld)
-	gocron.Every(5).Seconds().Do(getHackerNews)
+	nhnb := NewHackerNewsBatch()
+	gocron.Every(5).Seconds().Do(nhnb.getHackerNews)
+	gocron.Every(5).Seconds().Do(nhnb.getHackerNewsID)
 
 	<-gocron.Start()
 }

@@ -24,9 +24,11 @@ func (hns HackerNewsBatch) getHackerNews() (*entity.HackerNew, error) {
 	return hackerNews, nil
 }
 
-func (hns HackerNewsBatch) getHackerNewsID() {
-	hackerNewsID, err := hns.hackerNewsCli.GETNewsID()
+func (hns HackerNewsBatch) getHackerNewsID() ([]int, error) {
+	hackerNewsID, err := hns.hackerNewsCli.GetNewsID()
 	if err != nil {
-		return nil, err
+		return []int{}, err
 	}
+
+	return hackerNewsID, nil
 }

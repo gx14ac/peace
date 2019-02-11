@@ -16,7 +16,7 @@ type client struct {
 }
 
 type HackerNewsClientService interface {
-	GETNewsID() ([]int, error)
+	GetNewsID() ([]int, error)
 	GET(id string) (*entity.HackerNew, error)
 }
 
@@ -44,7 +44,8 @@ func NewHackerNewsClient() HackerNewsClientService {
 	return hackerNewsImpl
 }
 
-func (hnc HackerNewsClientServiceImpl) GETNewsID() ([]int, error) {
+// 最新のIDを取得してくる
+func (hnc HackerNewsClientServiceImpl) GetNewsID() ([]int, error) {
 	url := "https://hacker-news.firebaseio.com/v0/newstories.json"
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -79,7 +80,6 @@ func (hnc HackerNewsClientServiceImpl) GET(id string) (*entity.HackerNew, error)
 	url := fmt.Sprintf("https://hacker-news.firebaseio.com/v0/item/%s.json",
 		id,
 	)
-	fmt.Println(url)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -130,4 +130,5 @@ func (hnc HackerNewsClientServiceImpl) GET(id string) (*entity.HackerNew, error)
 
 	fmt.Println(hn)
 	return hn, nil
+
 }
