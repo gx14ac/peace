@@ -54,7 +54,7 @@ func (userRepo *UserImpl) FindByUserID(userId string) (*entity.User, *apperr.Err
 
 func (userRepo *UserImpl) Update(user entity.User) (*entity.User, *apperr.Error) {
 
-	res := userRepo.dbm.Update(&user).Find(user)
+	res := userRepo.dbm.Update(&user)
 
 	errSize := len(res.GetErrors())
 	if errSize > 0 {

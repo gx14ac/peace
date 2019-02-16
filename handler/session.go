@@ -93,4 +93,13 @@ func (sessionHandler *SessionHandler) Update(cc *util.CustomContext) {
 
 	userService := service.NewUserService(sessionHandler.dbm)
 
+	user, err := userService.Update(userID, param.UserName)
+	if err != nil {
+		cc.AbortWithError(400, err)
+		return
+	}
+
+	cc.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
 }

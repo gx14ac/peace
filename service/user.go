@@ -37,5 +37,5 @@ func (userService *UserService) Update(userID, userName string) (*entity.User, *
 	}
 
 	user.Name = userName
-
+	return userService.userRepo.Update(*user)
 }
