@@ -13,6 +13,7 @@ type UserService struct {
 	userRepo repository.User
 }
 
+// ここでgormを引数に取らずにwireで実現する
 func NewUserService(dbm *gorm.DB) *UserService {
 	return &UserService{
 		userRepo: repository.NewUserRepository(dbm),
