@@ -11,6 +11,7 @@ import (
 type User interface {
 	FirstOrCreate(userId, userName string) (*entity.User, *apperr.Error)
 	FindByUserID(userId string) (*entity.User, *apperr.Error)
+	Update(user entity.User) (*entity.User, *apperr.Error)
 }
 
 type UserImpl struct {
@@ -45,6 +46,19 @@ func (userRepo *UserImpl) FindByUserID(userId string) (*entity.User, *apperr.Err
 	errSize := len(res.GetErrors())
 	if errSize > 0 {
 		err := apperr.NewError(apperr.NotFound, errors.New("user not found"))
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (userRepo *UserImpl) Update(user entity.User) (*entity.User, *apperr.Error) {
+
+	res := userRepo.dbm.Update(&user).Find(user)
+
+	errSize := len(res.GetErrors())
+	if errSize > 0 {
+		err := apperr.NewError(apperr.DBError, res.GetErrors()[0])
 		return nil, err
 	}
 

@@ -29,3 +29,13 @@ func (userService *UserService) FindByUserID(userID string) (*entity.User, *appe
 	// helperを使用してuserIdを作成し、userRepoの引数にいれる
 	return userService.userRepo.FindByUserID(userID)
 }
+
+func (userService *UserService) Update(userID, userName string) (*entity.User, *apperr.Error) {
+	user, err := userService.userRepo.FindByUserID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	user.Name = userName
+
+}
