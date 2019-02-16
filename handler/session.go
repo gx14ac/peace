@@ -75,3 +75,31 @@ func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
 	})
 
 }
+
+// MEMO: - UserUpdate
+func (sessionHandler *SessionHandler) Update(cc *util.CustomContext) {
+	var param entity.UpdateParam
+
+	if stderr := cc.BindJSON(&param); stderr != nil {
+		err := apperr.NewError(apperr.BindError, stderr)
+		cc.AbortWithError(400, err)
+		return
+	}
+
+	userID, err := cc.GetUserID()
+	if err != nil {
+		cc.AbortWithError(400, err)
+	}
+
+	userService := service.NewUserService(sessionHandler.dbm)
+
+	user, err := userService.Update(userID, param.UserName)
+	if err != nil {
+		cc.AbortWithError(400, err)
+		return
+	}
+
+	cc.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
+}
