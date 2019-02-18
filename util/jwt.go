@@ -10,6 +10,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
+/// MEMO: - Tokenを作成する
 func NewJwtToken(user *entity.User, jwtSecret string) (string, *apperr.Error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":   user.ID,
@@ -24,6 +25,7 @@ func NewJwtToken(user *entity.User, jwtSecret string) (string, *apperr.Error) {
 	return token, nil
 }
 
+// Userからリクエストが来た時にtokenからuserのidをSetする
 func GetUserID(bearer, jwtSecret string) (string, *apperr.Error) {
 	if strings.Contains(bearer, "Bearer") {
 		bearer = strings.Replace(bearer, "Bearer", "", 1)

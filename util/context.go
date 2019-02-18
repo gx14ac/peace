@@ -47,6 +47,7 @@ func (cc *CustomContext) GetError() (*apperr.Error, bool) {
 	return err, ok
 }
 
+/// MEMO: util.GetUserID()でSetしたIDを取得する
 func (cc *CustomContext) GetUserID() (string, *apperr.Error) {
 	userIdIf, ok := cc.Get(idKey)
 	if !ok {
