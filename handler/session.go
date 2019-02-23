@@ -78,6 +78,7 @@ func (sessionHandler *SessionHandler) Me(cc *util.CustomContext) {
 
 // MEMO: - UserUpdate
 func (sessionHandler *SessionHandler) Update(cc *util.CustomContext) {
+	/// MEMO: - ここでgeaman, workerにリクエストを送る
 	var param entity.UpdateParam
 
 	if stderr := cc.BindJSON(&param); stderr != nil {
@@ -102,4 +103,14 @@ func (sessionHandler *SessionHandler) Update(cc *util.CustomContext) {
 	cc.JSON(http.StatusOK, gin.H{
 		"user": user,
 	})
+}
+
+func (sessionHandler *SessionHandler) Refresh(cc *util.CustomContext) {
+	userID, err := cc.GetUserID()
+
+	if err != nil {
+		cc.AbortWithError(400, err)
+		return
+	}
+
 }
