@@ -23,13 +23,13 @@ func NewRouter() *gin.Engine {
 		noAuth := api.Group("")
 		api.GET("/ping", util.CustomHandlerFunc(handler.Ping))
 		api.POST("/signup_guest", util.CustomHandlerFunc(sessionHandler.SignUp))
-
 		// using Auth API
 		jwtAuth := noAuth.Group("")
 		jwtAuth.Use(middleware.JwtAuth())
 		{
 			jwtAuth.GET("/me", util.CustomHandlerFunc(sessionHandler.Me))
 			jwtAuth.POST("/me/update", util.CustomHandlerFunc(sessionHandler.Update))
+			jwtAuth.POST("/me/reflresh", util.CustomHandlerFunc())
 		}
 	}
 
