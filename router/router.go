@@ -29,7 +29,7 @@ func NewRouter() *gin.Engine {
 		{
 			jwtAuth.GET("/me", util.CustomHandlerFunc(sessionHandler.Me))
 			jwtAuth.POST("/me/update", util.CustomHandlerFunc(sessionHandler.Update))
-			jwtAuth.POST("/me/reflresh", util.CustomHandlerFunc())
+			// jwtAuth.POST("/me/reflresh", util.CustomHandlerFunc())
 		}
 	}
 

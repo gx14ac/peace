@@ -105,12 +105,12 @@ func (sessionHandler *SessionHandler) Update(cc *util.CustomContext) {
 	})
 }
 
-func (sessionHandler *SessionHandler) Refresh(cc *util.CustomContext) {
-	userID, err := cc.GetUserID()
+// func (sessionHandler *SessionHandler) Refresh(cc *util.CustomContext) {
+// 	userID, err := cc.GetUserID()
 
-	if err != nil {
-		cc.AbortWithError(400, err)
-		return
-	}
+// 	if err != nil {
+// 		cc.AbortWithError(400, err)
+// 		return
+// 	}
 
-}
+// }
